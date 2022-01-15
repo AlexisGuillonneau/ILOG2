@@ -103,17 +103,37 @@
         }
 
         connectedCallback() {
-            this.getData(this.getAttribute("src"))
-            this.initTable();
-            this._sortButton.forEach((btn) => {
-                btn.addEventListener("click", this.handleSort)
+
+            fetch(this.getAttribute("src"),{headers: {'Accept':'application/json'}})
+            .then(response => response.json())
+            .then(data => {
+                
+                this._items = data[Object.keys(data)[0]]; 
+                this.initTable();
+                this._sortButton.forEach((btn) => {
+                    btn.addEventListener("click", this.handleSort)
+                })
+                this._filterButton.forEach((btn) => {
+                    btn.addEventListener("click", this.handleFilter)
+                })
+                this._filterInput.forEach((btn) => {
+                    btn.addEventListener("keydown", this.handleSearch)
+                })
             })
-            this._filterButton.forEach((btn) => {
-                btn.addEventListener("click", this.handleFilter)
-            })
-            this._filterInput.forEach((btn) => {
-                btn.addEventListener("keydown", this.handleSearch)
-            })
+            .catch(error => console.error(error))
+
+            // this.getData(this.getAttribute("src"))
+            // console.log(this._items)
+            // //this.initTable();
+            // this._sortButton.forEach((btn) => {
+            //     btn.addEventListener("click", this.handleSort)
+            // })
+            // this._filterButton.forEach((btn) => {
+            //     btn.addEventListener("click", this.handleFilter)
+            // })
+            // this._filterInput.forEach((btn) => {
+            //     btn.addEventListener("keydown", this.handleSearch)
+            // })
         }
 
         disconnectedCallback() {
@@ -172,13 +192,6 @@
                      
         }
 
-        getData(src) {
-            fetch(src,{headers: {'Accept':'application/json'}})
-            .then(response => response.json())
-            .then(data => this._items = data)
-            .catch(error => console.error(error))
-        }
-
         isInColumns(column) {
             return this._columns.includes(column);
         }
@@ -234,9 +247,8 @@
         }
 
         initTable() {
-
             
-          books.forEach((item,idx) => {
+          this._items.forEach((item,idx) => {
               var row = Object()
               row["id"] = idx;
               var i = 0
