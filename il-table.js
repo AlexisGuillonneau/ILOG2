@@ -34,110 +34,6 @@
             return result;
         }
     }
-    
-
-    var books = [
-        {
-            "title": "Germinal",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "La curée",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "Le ventre de Paris",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "Nana",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "L'assomoir",
-            "author": "Alexis G"
-        },
-        {
-            "title": "La Fortune des Rougon",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "L'Oeuvre",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "La joie de vivre",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "Au Bonheur des Dames",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "La Terre",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "La Bête humaine",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "Le Rêve",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "L'Argent",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "La Débâcle",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "Pot-Bouille",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "Une page d'amour",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "La Conquête de Plassans",
-            "author": 1
-        },
-        {
-            "title": "Germinal",
-            "author": "Emile ZOLA"
-        },
-        {
-            "title": "Son Excellence Eugène Rougon",
-            "author": "Emile ZOLA",
-            "test": 3
-        },
-        {
-            "title": "Son Excellence Eugène Rougon",
-            "author": "Emile ZOLA"
-        },
-        {
-            "test": 3,
-            "title": "Le Docteur Pascal",
-            "author": ["Emile ZOLA","Test"]
-        }
-    ];
-
-    var HttpClient = function() {
-        this.get = function(aUrl, aCallback) {
-            var anHttpRequest = new XMLHttpRequest();
-            anHttpRequest.onreadystatechange = function() { 
-                if (anHttpRequest.readyState == 4 && anHttpRequest.status == 200)
-                    aCallback(anHttpRequest.responseText);
-            }
-    
-            anHttpRequest.open( "GET", aUrl, true );            
-            anHttpRequest.send( null );
-        }
-    }
-
     var template = document.createElement("template");
     template.innerHTML  = `
         
@@ -197,7 +93,6 @@
             this._shadow = this.attachShadow({ mode: "open"});
             this._shadow.appendChild(template.content.cloneNode(true))
 
-            this._items = books;
             this._tableHead = this._shadow.querySelector("thead");
             this._tableBody = this._shadow.querySelector("tbody");
             
@@ -208,6 +103,7 @@
         }
 
         connectedCallback() {
+            this.getData(this.getAttribute("src"))
             this.initTable();
             this._sortButton.forEach((btn) => {
                 btn.addEventListener("click", this.handleSort)
@@ -276,15 +172,11 @@
                      
         }
 
-        getData() {
-            const xhr = new XMLHttpRequest()
-            try {
-                xhr.open("get", "books.json", false)
-                xhr.send()
-                return xhr.responseText
-            } catch (err) {
-                return ""
-            }
+        getData(src) {
+            fetch(src,{headers: {'Accept':'application/json'}})
+            .then(response => response.json())
+            .then(data => this._items = data)
+            .catch(error => console.error(error))
         }
 
         isInColumns(column) {
@@ -343,7 +235,6 @@
 
         initTable() {
 
-            
             
           books.forEach((item,idx) => {
               var row = Object()
