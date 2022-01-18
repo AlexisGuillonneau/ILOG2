@@ -142,6 +142,26 @@
     template.innerHTML  = `
         
         <style>
+        table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            
+        }
+        thead {
+            background-color: #4da6ff;
+            font-size: 20px;
+        }
+        td, tr {
+            border-style: solid;
+            border-color: black;
+            border-width: 2px;
+        }
+
+        tr:nth-child(even){background-color: #f2f2f2;}
+
+        tbody>tr:hover {background-color: #ccc;}
+
         .badge {
             display: inline-block;
             min-width: 1.5em; /* em unit */
@@ -175,6 +195,83 @@
             box-shadow: 0 1.5rem 1rem -1rem rgba(0, 0, 0, .1);
             border-radius: .3rem;
         }
+        @import url("https://fonts.googleapis.com/css?family=Roboto:400,400i,700");
+
+        * {
+          font-family: Roboto, sans-serif;
+          padding: 0;
+          margin: 0;
+        }
+        
+        .flexbox {
+          background: linear-gradient(155deg, #55c7ed, #2bb3e0, #3bc1ed);
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        
+        .search {
+          margin: 20px;
+        }
+        
+        .search > h3 {
+          font-weight: normal;
+        }
+        
+        .search > h1,
+        .search > h3 {
+          color: white;
+          margin-bottom: 15px;
+          text-shadow: 0 1px #0091c2;
+        }
+        
+        .search > div {
+          display: inline-block;
+          position: relative;
+          filter: drop-shadow(0 1px #0091c2);
+        }
+        
+        .search > div:after {
+          content: "";
+          background: white;
+          width: 4px;
+          height: 20px;
+          position: absolute;
+          top: 40px;
+          right: 2px;
+          transform: rotate(135deg);
+        }
+        
+        .search > div > input {
+          color: white;
+          font-size: 16px;
+          background: transparent;
+          width: 25px;
+          height: 25px;
+          padding: 10px;
+          border: solid 3px white;
+          outline: none;
+          border-radius: 35px;
+          transition: width 0.5s;
+        }
+        
+        .search > div > input::placeholder {
+          color: #efefef;
+          opacity: 0;
+          transition: opacity 150ms ease-out;
+        }
+        
+        .search > div > input:focus::placeholder {
+          opacity: 1;
+        }
+        
+        .search > div > input:focus,
+        .search > div > input:not(:placeholder-shown) {
+          width: 250px;
+        }
+        
         </style>
         <div class="labels">
             <span class="badge string">a-Z</span> <span>String</span>
@@ -338,7 +435,14 @@
         }
 
         getButtons(){
-            return ` <button type="button" class="sort" data-order="1">Sort 1</button><button type="button" class="sort" data-order="-1">Sort -1</button><button type="button" class="filter">Filter</button><input type="text" class="search" hidden/>`
+            return ` <div class="flexbox">
+            <div class="search"><button type="button" class="sort" data-order="1">Sort 1</button><button type="button" class="sort" data-order="-1">Sort -1</button><button type="button" class="filter">Filter</button><input type="text" class="search" hidden/>
+            
+              <div>
+                <input type="text" placeholder="Search . . ." required>
+              </div>
+            </div>
+          </div>`
         }
 
         initTable() {
