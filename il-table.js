@@ -165,6 +165,10 @@
             border-radius: 25px;
 
         }
+        .search{
+            border-radius: 25px;
+            border-width: 1px;
+        }
         tbody>tr:hover {background-color: #ccc;}
         .badge {
             display: inline-block;
